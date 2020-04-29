@@ -1,0 +1,4 @@
+*.swp
+*.deps
+Makefile
+autom4te.cache

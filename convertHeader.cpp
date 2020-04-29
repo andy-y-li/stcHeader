@@ -54,6 +54,7 @@ int main(int argc, char* argv[]) {
                     "-h\t\t\t: this help\n"
                     "-s\t\t\t: source header\n"
                     "-d\t\t\t: dest header(default: stdout)\n"
+                    "github:https://github.com/andy-y-li/stcHeader.git"
                     "\n\n");
                 return 0;
             case '?':
@@ -72,9 +73,24 @@ int main(int argc, char* argv[]) {
 
     string s;
     string previous_addr;
+    bool isComment = false;
     while (getline(file_in, s)) {
-        if (s[0] == '/' || s[0] == '#')
+        if (s[0] == '/' || s[0] == '#'){
+            if (s == "/*") {
+                isComment = true;
+            }
             outfile << s << "\n";
+            continue;
+        }
+        else if (s == "*/") {
+            outfile << s << "\n";
+            isComment = false;
+            continue;
+        }
+        else if (isComment) {
+            outfile << s << "\n";
+            continue;
+        }
         else if (s.length() > 4) {
             string::size_type type_end = s.find_first_of(' ');
             string type = s.substr(0, type_end);
